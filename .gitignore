@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+
+# next.js build output
+navhub/.next/
+navhub/.next.bak/
+navhub/.next.bak2/
+navhub/.next.before-restart/
+
+# env
+.env
+.env.local
+
+# logs
+*.log
+
+# os
+.DS_Store
+Thumbs.db
+
+# sqlite
+navhub/*.db
+navhub/*.db-journal
+
+# workbuddy
+.workbuddy/
+
+# misc
+navhub/r.html
+navhub/.devlog
