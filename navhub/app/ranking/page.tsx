@@ -4,15 +4,17 @@ import { ProductCard } from "@/components/ProductCard";
 import { categories } from "@/lib/data";
 import { listAllProducts, getUpvotedSet } from "@/lib/store";
 
+export const runtime = 'edge';
+
 export const metadata = { title: "产品榜单 · NavHub" };
 
-export default function RankingPage() {
+export default async function RankingPage() {
   const all = listAllProducts().sort((a, b) => b.upvotes - a.upvotes);
   const featured = all.filter((p) => p.featured);
   const top10 = all.slice(0, 10);
   const total = all.length;
 
-  const voterKey = cookies().get("navhub_voter")?.value ?? "";
+  const voterKey = (await cookies()).get("navhub_voter")?.value ?? "";
   const upvotedSet = getUpvotedSet(all.map((p) => p.id), voterKey);
 
   return (

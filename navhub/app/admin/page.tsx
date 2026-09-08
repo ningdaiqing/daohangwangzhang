@@ -6,10 +6,12 @@ import { categories } from "@/lib/data";
 import { AdminLoginForm } from "./AdminLoginForm";
 import { ReviewActions } from "./ReviewActions";
 
+export const runtime = 'edge';
+
 export const metadata = { title: "后台审核 · NavHub" };
 
-export default function AdminPage() {
-  const token = cookies().get("navhub_admin")?.value;
+export default async function AdminPage() {
+  const token = (await cookies()).get("navhub_admin")?.value;
   const isAuthed = isAdminToken(token);
 
   if (!isAuthed) {

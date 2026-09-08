@@ -10,8 +10,8 @@ import {
 } from "@/lib/store";
 import { getCategoryById } from "@/lib/data";
 
-function getVoterKey(): string {
-  const c = cookies();
+async function getVoterKey(): Promise<string> {
+  const c = await cookies();
   let v = c.get("navhub_voter")?.value;
   if (!v) {
     v = `anon-${Math.random().toString(36).slice(2, 10)}-${Date.now()}`;
@@ -25,8 +25,8 @@ function getVoterKey(): string {
   return v;
 }
 
-function getAdminToken(): string | undefined {
-  return cookies().get("navhub_admin")?.value;
+async function getAdminToken(): Promise<string | undefined> {
+  return (await cookies()).get("navhub_admin")?.value;
 }
 
 // ===== 提交 =====
@@ -76,7 +76,7 @@ export async function toggleUpvoteAction(productId: string): Promise<{
   total?: number;
 }> {
   if (!productId) return { ok: false };
-  const voterKey = getVoterKey();
+  const voterKey = await getVoterKey();
   const r = upvoteProduct(productId, voterKey);
   revalidatePath("/");
   revalidatePath(`/product/${productId}`);
@@ -85,13 +85,13 @@ export async function toggleUpvoteAction(productId: string): Promise<{
 }
 
 // ===== 审核 =====
-function isAdmin(): boolean {
-  const v = getAdminToken();
+async function isAdmin(): Promise<boolean> {
+  const v = await getAdminToken();
   return v === "navhub-admin-2026";
 }
 
 export async function reviewAction(form: FormData): Promise<{ ok: boolean; error?: string }> {
-  if (!isAdmin()) return { ok: false, error: "无权限" };
+  if (!(await isAdmin())) return { ok: false, error: "无权限" };
   const id = Number(form.get("id"));
   const action = String(form.get("action") ?? "");
   const note = String(form.get("note") ?? "").trim() || undefined;
@@ -114,7 +114,7 @@ export async function adminLogin(form: FormData): Promise<{ ok: boolean; error?:
   if (token !== "navhub-admin-2026") {
     return { ok: false, error: "口令错误" };
   }
-  cookies().set("navhub_admin", token, {
+  (await cookies()).set("navhub_admin", token, {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
@@ -125,7 +125,7 @@ export async function adminLogin(form: FormData): Promise<{ ok: boolean; error?:
 }
 
 export async function adminLogout(): Promise<{ ok: boolean }> {
-  cookies().delete("navhub_admin");
+  (await cookies()).delete("navhub_admin");
   revalidatePath("/admin");
   return { ok: true };
 }

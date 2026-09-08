@@ -12,21 +12,23 @@ export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const cat = getCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const cat = getCategoryBySlug(slug);
   if (!cat) return { title: "分类 · NavHub" };
   return { title: `${cat.name} · NavHub`, description: cat.desc };
 }
 
-export default function CategoryDetail({ params }: { params: { slug: string } }) {
-  const cat = getCategoryBySlug(params.slug);
+export default async function CategoryDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const cat = getCategoryBySlug(slug);
   if (!cat) return notFound();
 
   const all = listAllProducts()
     .filter((p) => p.categoryId === cat.id)
     .sort((a, b) => b.upvotes - a.upvotes);
 
-  const voterKey = cookies().get("navhub_voter")?.value ?? "";
+  const voterKey = (await cookies()).get("navhub_voter")?.value ?? "";
   const upvotedSet = getUpvotedSet(all.map((p) => p.id), voterKey);
 
   return (

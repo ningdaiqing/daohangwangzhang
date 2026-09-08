@@ -2,6 +2,7 @@
 // 根据 runtime 环境自动选择
 
 import type { Submission, Product, PricingTier } from "./data";
+import { products as mockProducts, categories } from "./data";
 
 // ===== 内存存储（Serverless 兼容） =====
 interface MemSubmission {
@@ -51,12 +52,13 @@ if (!g.__navhub_products_extra) g.__navhub_products_extra = [];
 if (!g.__navhub_next_id) g.__navhub_next_id = 1;
 
 // ===== 尝试加载 SQLite（本地开发环境） =====
+// 使用 eval("require") 防止 webpack/edge runtime 尝试打包 better-sqlite3
 let sqliteDb: any = null;
 try {
-  // 动态加载，Cloudflare 环境会直接跳过
-  const Database = require("better-sqlite3");
-  const path = require("node:path");
-  const fs = require("node:fs");
+  const _require = eval("require");
+  const Database = _require("better-sqlite3");
+  const path = _require("node:path");
+  const fs = _require("node:fs");
   const DB_DIR = path.join(process.cwd(), ".data");
   const DB_PATH = path.join(DB_DIR, "navhub.db");
   if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
@@ -204,7 +206,6 @@ export function getProductUpvotes(productId: string, base = 0): number {
 }
 
 export function listAllProducts(): Product[] {
-  const { products: mockProducts } = require("./data");
   const mock: Product[] = mockProducts.map((p: Product) => ({
     ...p,
     upvotes: p.upvotes + countUpvotes(p.id),

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { listAllProducts } from "@/lib/store";
 import { getCategoryById, getTagById } from "@/lib/data";
 
+export const runtime = 'edge';
+
 export const dynamic = "force-dynamic";
 
 const SITE_URL = "https://navhub.example.com";

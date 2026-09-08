@@ -9,21 +9,23 @@ export function generateStaticParams() {
   return tags.map((t) => ({ slug: t.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const tag = getTagBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const tag = getTagBySlug(slug);
   if (!tag) return { title: "标签 · NavHub" };
   return { title: `#${tag.name} · NavHub` };
 }
 
-export default function TagDetail({ params }: { params: { slug: string } }) {
-  const tag = getTagBySlug(params.slug);
+export default async function TagDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const tag = getTagBySlug(slug);
   if (!tag) return notFound();
 
   const list = listAllProducts()
     .filter((p) => p.tagIds.includes(tag.id))
     .sort((a, b) => b.upvotes - a.upvotes);
 
-  const voterKey = cookies().get("navhub_voter")?.value ?? "";
+  const voterKey = (await cookies()).get("navhub_voter")?.value ?? "";
   const upvotedSet = getUpvotedSet(list.map((p) => p.id), voterKey);
 
   return (

@@ -9,12 +9,15 @@ import {
 } from "@/lib/data";
 import { listAllProducts, getUpvotedSet } from "@/lib/store";
 
-export default function HomePage({
+export const runtime = 'edge';
+
+export default async function HomePage({
   searchParams,
 }: {
-  searchParams?: { q?: string };
+  searchParams?: Promise<{ q?: string }>;
 }) {
-  const q = searchParams?.q?.toLowerCase().trim() ?? "";
+  const sp = (await searchParams) ?? {};
+  const q = sp.q?.toLowerCase().trim() ?? "";
   const all = listAllProducts().sort((a, b) => b.upvotes - a.upvotes);
   const featured = all.filter((p) => p.featured);
 
@@ -34,7 +37,7 @@ export default function HomePage({
     .sort((a, b) => +new Date(b.submittedAt) - +new Date(a.submittedAt))
     .slice(0, 6);
 
-  const voterKey = cookies().get("navhub_voter")?.value ?? "";
+  const voterKey = (await cookies()).get("navhub_voter")?.value ?? "";
   const upvotedSet = getUpvotedSet(all.map((p) => p.id), voterKey);
 
   return (
@@ -118,7 +121,7 @@ export default function HomePage({
           {q && (
             <section>
               <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">
-                搜索 "{searchParams?.q}" · 命中 {filtered.length} 条
+                搜索 "{sp.q}" · 命中 {filtered.length} 条
               </h2>
               {filtered.length === 0 ? (
                 <p className="mt-4 rounded-2xl border border-dashed border-ink-200 bg-white p-8 text-center text-ink-500 dark:border-ink-700 dark:bg-ink-800/40 dark:text-ink-400">

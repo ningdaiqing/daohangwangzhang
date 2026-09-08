@@ -10,6 +10,8 @@ import { generateSeoContent } from "@/lib/seo-content";
 import { UpvoteButton } from "./UpvoteButton";
 import { ProductLogo } from "@/components/ProductLogo";
 
+export const runtime = 'edge';
+
 // 不再用 generateStaticParams；产品总数 = mock 20 + 动态审核通过 N，动态渲染更顺
 export const dynamicParams = true;
 
@@ -17,8 +19,9 @@ function findProduct(id: string) {
   return listAllProducts().find((p) => p.id === id);
 }
 
-export function generateMetadata({ params }: { params: { id: string } }) {
-  const p = findProduct(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const p = findProduct(id);
   if (!p) return { title: "产品 · NavHub" };
   const category = getCategoryById(p.categoryId);
   const title = `${p.name}是什么？${p.tagline} | ${category?.name ?? "AI 工具"} · NavHub`;
@@ -84,14 +87,15 @@ function buildFaqJsonLd(p: ReturnType<typeof findProduct>) {
   };
 }
 
-export default function ProductDetail({ params }: { params: { id: string } }) {
-  const p = findProduct(params.id);
+export default async function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const p = findProduct(id);
   if (!p) return notFound();
 
   const jsonLd = buildProductJsonLd(p);
   const faqJsonLd = buildFaqJsonLd(p);
 
-  const voterKey = cookies().get("navhub_voter")?.value ?? "";
+  const voterKey = (await cookies()).get("navhub_voter")?.value ?? "";
   const upvoted = voterKey
     ? getUpvotedSet([p.id], voterKey).has(p.id)
     : false;
