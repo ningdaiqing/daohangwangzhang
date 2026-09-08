@@ -28,3 +28,6 @@ navhub/*.db-journal
 # misc
 navhub/r.html
 navhub/.devlog
+
+# lock files (cross-platform issues on Cloudflare)
+navhub/package-lock.json
