@@ -7,9 +7,7 @@ import { listAllProducts, getUpvotedSet } from "@/lib/store";
 
 export const runtime = 'edge';
 
-export function generateStaticParams() {
-  return tags.map((t) => ({ slug: t.slug }));
-}
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
