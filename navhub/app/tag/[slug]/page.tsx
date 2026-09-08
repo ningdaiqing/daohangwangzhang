@@ -5,6 +5,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { tags, getTagBySlug } from "@/lib/data";
 import { listAllProducts, getUpvotedSet } from "@/lib/store";
 
+export const runtime = 'edge';
+
 export function generateStaticParams() {
   return tags.map((t) => ({ slug: t.slug }));
 }

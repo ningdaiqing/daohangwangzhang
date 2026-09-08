@@ -8,6 +8,8 @@ import {
 } from "@/lib/data";
 import { listAllProducts, getUpvotedSet } from "@/lib/store";
 
+export const runtime = 'edge';
+
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
 }
