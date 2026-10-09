@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description: "精选高质量 AI 产品，覆盖对话、编程、图像、视频、办公、Agent 六大类。",
   keywords: ["AI 产品", "AI 工具", "AI 导航", "AI 产品导航", "NavHub"],
   metadataBase: new URL("https://daohangwangzhang1.pages.dev"),
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "NavHub · AI 产品导航",
     description: "精选高质量 AI 产品，覆盖对话、编程、图像、视频、办公、Agent 六大类。",
