@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "NavHub · AI 产品导航",
   description: "精选高质量 AI 产品，覆盖对话、编程、图像、视频、办公、Agent 六大类。",
   keywords: ["AI 产品", "AI 工具", "AI 导航", "AI 产品导航", "NavHub"],
-  metadataBase: new URL("https://navhub.example.com"),
+  metadataBase: new URL("https://daohangwangzhang1.pages.dev"),
   openGraph: {
     title: "NavHub · AI 产品导航",
     description: "精选高质量 AI 产品，覆盖对话、编程、图像、视频、办公、Agent 六大类。",
@@ -25,13 +25,13 @@ const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "NavHub",
-  url: "https://navhub.example.com",
+  url: "https://daohangwangzhang1.pages.dev",
   description: "精选高质量 AI 产品导航站",
   potentialAction: {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: "https://navhub.example.com/?q={search_term_string}",
+      urlTemplate: "https://daohangwangzhang1.pages.dev/?q={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },

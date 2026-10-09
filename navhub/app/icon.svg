@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5d87ff"/>
+      <stop offset="100%" stop-color="#2745d3"/>
+    </linearGradient>
+    <linearGradient id="needle" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#b8cfff"/>
+      <stop offset="100%" stop-color="#b8cfff"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="128" fill="url(#bg)"/>
+  <!-- Compass ring -->
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.3"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.15"/>
+  <!-- Compass needle (north up) -->
+  <polygon points="256,120 280,256 256,392 232,256" fill="url(#needle)"/>
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="14" fill="#ffffff"/>
+  <circle cx="256" cy="256" r="6" fill="#2745d3"/>
+  <!-- Cardinal marks -->
+  <circle cx="256" cy="116" r="6" fill="#ffffff" opacity="0.8"/>
+  <circle cx="396" cy="256" r="6" fill="#ffffff" opacity="0.5"/>
+  <circle cx="256" cy="396" r="6" fill="#ffffff" opacity="0.5"/>
+  <circle cx="116" cy="256" r="6" fill="#ffffff" opacity="0.5"/>
+</svg>
